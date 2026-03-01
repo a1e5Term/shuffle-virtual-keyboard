@@ -10,6 +10,11 @@ root.title("")  # Исправлено: корректный вызов мето
 # Установка полноэкранного режима
 root.attributes('-fullscreen', True)
 
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+
+print(f"Screen width: {width}px, height: {height}px")
+
 # Функция для выхода из полноэкранного режима
 def exit_fullscreen(event=None):
     root.attributes('-fullscreen', False)
@@ -44,9 +49,11 @@ box.grid(row=0, column=0)
 # Альтернатива — задать паддинг для frame frame1: frame1.pack(pady=10).
 
 buttons = [
-'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О',
-'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Ъ', 'Ь', 'Э',
-'Ю', 'Я', '.',  ',', ':', ';', '?', '!', 'Space', 'Back', 'CLEAR'
+	'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О',
+	'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Ъ', 'Ь', 'Э',
+	'Ю', 'Я', '.',  ',', ':', ';', '?', '!', 
+	'Space', 'Space', 'Space', 'Space', 'Space', 'Space', 'Space', 'Space',
+	'Back', 'CLEAR', 'Enter'
 ]
 
 random.shuffle(buttons)
