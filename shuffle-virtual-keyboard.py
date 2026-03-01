@@ -1,8 +1,11 @@
 #!/bin/python3
 
-from tkinter import *
 import random
+import os
 
+from datetime import datetime  # если не импортировано ранее
+
+from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter.constants import END
@@ -32,14 +35,18 @@ def save_text_to_file(text_widget: Text):
     content = text_widget.get("1.0", END)
 
     # Открываем диалог сохранения файла
-    file_path = filedialog.asksaveasfilename(
-        defaultextension=".txt",
-        filetypes=[
-            ("Text files", "*.txt"),
-            ("All files", "*.*")
-        ],
-        title="Сохранить как..."
-    )
+
+    # file_path = filedialog.asksaveasfilename(
+        # defaultextension=".txt",
+        # filetypes=[
+            # ("Text files", "*.txt"),
+            # ("All files", "*.*")
+        # ],
+        # title="Сохранить как..."
+    # )
+
+    default_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".txt"
+    file_path = os.path.join(os.getcwd(), default_name)
 
     if not file_path:
         # Пользователь отменил сохранение
@@ -48,7 +55,9 @@ def save_text_to_file(text_widget: Text):
     try:
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(content)
-        messagebox.showinfo("Сохранено", f"Содержимое сохранено в:\n{file_path}")
+    
+        # messagebox.showinfo("Сохранено", f"Содержимое сохранено в:\n{file_path}")
+
     except Exception as e:
         messagebox.showerror("Ошибка сохранения", f"Не удалось сохранить файл:\n{e}")
 
@@ -82,6 +91,9 @@ root.bind("<Button-3>", show_popup)  # Windows/Linux
 
 frame1 = Frame(root)
 frame1.pack()
+# frame1.pack(fill=BOTH, expand=True)  # растягиваем контейнер
+
+
 # frame1 = Frame(root): создаёт новый контейнер-виджет Frame, который является дочерним к окну root. Он служит для группирования других виджетов внутри окна.
 # frame1.pack(): размещает этот Frame в окне с помощью геометрического менеджера pack, т. е. добавляет его в окно и выстраивает в доступном пространстве (по умолчанию сверху вниз, по порядку вызова).
 
@@ -100,8 +112,18 @@ def select(value):
     else:
         box.insert(INSERT, value)
 
+# Чтобы виджет Text занимал всю доступную ширину окна (соответственно и всей ширины экрана, если окно разворачивается до полного размера), нужно чтобы родительский контейнер expanding и менеджер геометрии растягивали его.
+
 box = Text(frame1, height=20, font=("arial", 15), wrap=WORD)
-box.grid(row=0, column=0)
+# box = Text(frame1, height=20, font=("arial", 15), wrap=WORD,
+               # bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
+
+# Дополнительно можно настроить подсветку выделения:
+# Text.configure(selectbackground="#3e6b8a", selectforeground="white")
+
+# box.pack(fill=BOTH, expand=True)
+box.pack(fill=BOTH, expand=True, padx=(10, 10), pady=(10, 0))
+# box.grid(row=0, column=0)
 # box.grid(row=0, column=0, pady=(20, 0))
 # Альтернатива — задать паддинг для frame frame1: frame1.pack(pady=10).
 
