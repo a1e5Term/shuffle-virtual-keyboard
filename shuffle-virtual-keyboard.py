@@ -90,8 +90,8 @@ root.bind("<Button-3>", show_popup)  # Windows/Linux
 # ===============================================================
 
 frame1 = Frame(root)
-frame1.pack()
-# frame1.pack(fill=BOTH, expand=True)  # растягиваем контейнер
+# frame1.pack()
+frame1.pack(fill=BOTH, expand=True)  # растягиваем контейнер
 
 
 # frame1 = Frame(root): создаёт новый контейнер-виджет Frame, который является дочерним к окну root. Он служит для группирования других виджетов внутри окна.
@@ -114,9 +114,9 @@ def select(value):
 
 # Чтобы виджет Text занимал всю доступную ширину окна (соответственно и всей ширины экрана, если окно разворачивается до полного размера), нужно чтобы родительский контейнер expanding и менеджер геометрии растягивали его.
 
-box = Text(frame1, height=20, font=("arial", 15), wrap=WORD)
-# box = Text(frame1, height=20, font=("arial", 15), wrap=WORD,
-               # bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
+# box = Text(frame1, height=20, font=("arial", 15), wrap=WORD)
+box = Text(frame1, height=20, font=("arial", 15), wrap=WORD,
+               bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
 
 # Дополнительно можно настроить подсветку выделения:
 # Text.configure(selectbackground="#3e6b8a", selectforeground="white")
