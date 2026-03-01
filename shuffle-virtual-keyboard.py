@@ -3,6 +3,25 @@
 from tkinter import *
 import random
 
+# ===============================================================
+
+def say_hello():
+    print("Hello!")
+
+def say_goodbye():
+    print("Goodbye!")
+
+# Обработчик правого клика
+def show_popup(event):
+    # Позиция меню будет там, где курсор
+    popup.tk_popup(event.x_root, event.y_root)
+
+# Функция для выхода из полноэкранного режима
+def exit_fullscreen(event=None):
+    root.attributes('-fullscreen', False)
+
+# ===============================================================
+
 root = Tk()  # Создаем основное окно
 
 root.title("")  # Исправлено: корректный вызов метода
@@ -15,13 +34,25 @@ height = root.winfo_screenheight()
 
 print(f"Screen width: {width}px, height: {height}px")
 
-# Функция для выхода из полноэкранного режима
-def exit_fullscreen(event=None):
-    root.attributes('-fullscreen', False)
+
+# ===============================================================
 
 # Привязываем клавишу Escape для выхода из полноэкранного режима
 # root.bind('<Escape>', exit_fullscreen)
 root.bind('<Escape>', lambda event: root.destroy())
+
+# Привязка к правому клику на окне
+root.bind("<Button-3>", show_popup)  # Windows/Linux
+
+# ===============================================================
+
+# Создаём контекстное меню
+popup = Menu(root, tearoff=0)
+# popup.add_command(label="Привет", command=say_hello)
+popup.add_separator()
+popup.add_command(label="Выход", command=root.quit)
+
+# ===============================================================
 
 frame1 = Frame(root)
 frame1.pack()
