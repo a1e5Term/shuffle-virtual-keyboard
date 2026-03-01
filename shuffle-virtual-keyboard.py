@@ -3,13 +3,15 @@
 from tkinter import *
 import random
 
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter.constants import END
+
+
 # ===============================================================
 
-def say_hello():
-    print("Hello!")
-
-def say_goodbye():
-    print("Goodbye!")
+# def say_hello():
+    # print("Hello!")
 
 # Обработчик правого клика
 def show_popup(event):
@@ -19,6 +21,37 @@ def show_popup(event):
 # Функция для выхода из полноэкранного режима
 def exit_fullscreen(event=None):
     root.attributes('-fullscreen', False)
+
+
+def save_text_to_file(text_widget: Text):
+    """
+    Сохраняет содержимое виджета Text в файл.
+    Диалог выбора файла: имя и путь, формат определяется по расширению.
+    """
+    # Получаем текст из виджета (убираем финальный перевод строки, если он есть)
+    content = text_widget.get("1.0", END)
+
+    # Открываем диалог сохранения файла
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".txt",
+        filetypes=[
+            ("Text files", "*.txt"),
+            ("All files", "*.*")
+        ],
+        title="Сохранить как..."
+    )
+
+    if not file_path:
+        # Пользователь отменил сохранение
+        return
+
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        messagebox.showinfo("Сохранено", f"Содержимое сохранено в:\n{file_path}")
+    except Exception as e:
+        messagebox.showerror("Ошибка сохранения", f"Не удалось сохранить файл:\n{e}")
+
 
 # ===============================================================
 
@@ -44,13 +77,6 @@ root.bind('<Escape>', lambda event: root.destroy())
 # Привязка к правому клику на окне
 root.bind("<Button-3>", show_popup)  # Windows/Linux
 
-# ===============================================================
-
-# Создаём контекстное меню
-popup = Menu(root, tearoff=0)
-# popup.add_command(label="Привет", command=say_hello)
-popup.add_separator()
-popup.add_command(label="Выход", command=root.quit)
 
 # ===============================================================
 
@@ -78,6 +104,18 @@ box = Text(frame1, height=20, font=("arial", 15), wrap=WORD)
 box.grid(row=0, column=0)
 # box.grid(row=0, column=0, pady=(20, 0))
 # Альтернатива — задать паддинг для frame frame1: frame1.pack(pady=10).
+
+# ===============================================================
+
+# Создаём контекстное меню
+popup = Menu(root, tearoff=0)
+# popup.add_command(label="Сохранить", command=say_hello)
+# popup.add_command(label="Сохранить", command=save_text_to_file(box))
+popup.add_command(label="Сохранить", command=lambda: save_text_to_file(box))
+popup.add_separator()
+popup.add_command(label="Выход", command=root.quit)
+
+# ===============================================================
 
 buttons = [
 	'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О',
