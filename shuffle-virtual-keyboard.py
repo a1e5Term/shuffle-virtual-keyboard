@@ -25,6 +25,17 @@ def show_popup(event):
 def exit_fullscreen(event=None):
     root.attributes('-fullscreen', False)
 
+def copy_all_text_to_clipboard(text_widget):
+    """
+    Копирует всё содержимое Text виджета в буфер обмена.
+    text_widget: tkinter.Text
+    """
+    root = text_widget.winfo_toplevel()  # получить корневой/top-level виджет
+    content = text_widget.get("1.0", "end-1c")  # весь текст без завершающего переноса
+    root.clipboard_clear()
+    root.clipboard_append(content)
+    root.update()  # обновить буфер обмена
+
 
 def save_text_to_file(text_widget: Text):
     """
@@ -86,6 +97,8 @@ root.bind('<Escape>', lambda event: root.destroy())
 # Привязка к правому клику на окне
 root.bind("<Button-3>", show_popup)  # Windows/Linux
 
+# # или привязать Ctrl+C к копированию всего текста
+# box.bind("<Control-c>", lambda e: copy_all_text_to_clipboard(box))
 
 # ===============================================================
 
@@ -134,6 +147,7 @@ popup = Menu(root, tearoff=0)
 # popup.add_command(label="Сохранить", command=say_hello)
 # popup.add_command(label="Сохранить", command=save_text_to_file(box))
 popup.add_command(label="Сохранить", command=lambda: save_text_to_file(box))
+popup.add_command(label="Копировать", command=lambda: copy_all_text_to_clipboard(box))
 popup.add_separator()
 popup.add_command(label="Выход", command=root.quit)
 
