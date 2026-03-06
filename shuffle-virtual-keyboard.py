@@ -90,18 +90,6 @@ print(f"Screen width: {width}px, height: {height}px")
 
 # ===============================================================
 
-# Привязываем клавишу Escape для выхода из полноэкранного режима
-# root.bind('<Escape>', exit_fullscreen)
-root.bind('<Escape>', lambda event: root.destroy())
-
-# Привязка к правому клику на окне
-root.bind("<Button-3>", show_popup)  # Windows/Linux
-
-# # или привязать Ctrl+C к копированию всего текста
-# box.bind("<Control-c>", lambda e: copy_all_text_to_clipboard(box))
-
-# ===============================================================
-
 frame1 = Frame(root)
 # frame1.pack()
 frame1.pack(fill=BOTH, expand=True)  # растягиваем контейнер
@@ -192,5 +180,19 @@ for button in buttons:
     if varColumn > 14 and varRow == 7:
         varColumn = 0
         varRow += 1
+
+# ===============================================================
+
+# Привязываем клавишу Escape для выхода из полноэкранного режима
+# root.bind('<Escape>', exit_fullscreen)
+root.bind('<Escape>', lambda event: root.destroy())
+
+# Привязка к правому клику на окне
+root.bind("<Button-3>", show_popup)  # Windows/Linux
+
+# Ctrl+C копирование всего текста
+root.bind("<Control-c>", lambda e: copy_all_text_to_clipboard(box))
+
+# ===============================================================
 
 root.mainloop()
