@@ -13,8 +13,29 @@ from tkinter.constants import END
 
 # ===============================================================
 
-# def say_hello():
-    # print("Hello!")
+# def show_notification(title, text, duration=3000):
+def show_notification(text, duration=5000):
+    pop = Toplevel(root)
+    pop.wm_overrideredirect(True)  # без рамки окна
+    pop.attributes("-topmost", True)
+
+    # Размер и позиция попапа (обычно внизу справа)
+    width, height = 320, 100
+    screen_w = root.winfo_screenwidth()
+    screen_h = root.winfo_screenheight()
+    x = screen_w - width - 20
+    # y = screen_h - height - 60
+    y = 40
+    pop.geometry(f"{width}x{height}+{x}+{y}")
+
+    frame = Frame(pop, relief="raised", borderwidth=1)
+    frame.pack(fill="both", expand=True)
+
+    # Label(frame, text=title, font=("TkDefaultFont", 12, "bold")).pack(anchor="w", padx=10, pady=(8,0))
+    Label(frame, text=text, wraplength=300).pack(anchor="w", padx=10, pady=(0,8))
+
+    # Закрыть через duration миллисекунд
+    pop.after(duration, pop.destroy)
 
 # Обработчик правого клика
 def show_popup(event):
@@ -37,6 +58,21 @@ def copy_all_text_to_clipboard(text_widget):
     root.update()  # обновить буфер обмена
 
 
+
+def flash_color():
+    # Сохраняем исходный цвет фона окна
+    global original_bg
+    original_bg = root.cget("bg")
+
+    # Меняем цвет главного окна
+    root.config(bg="orange")  # любой нужный цвет
+    # Через 3000 мс вернуть исходный цвет
+    root.after(3000, restore_color)
+
+def restore_color():
+    root.config(bg=original_bg)
+    
+    
 def save_text_to_file(text_widget: Text):
     """
     Сохраняет содержимое виджета Text в файл.
@@ -71,6 +107,10 @@ def save_text_to_file(text_widget: Text):
 
     except Exception as e:
         messagebox.showerror("Ошибка сохранения", f"Не удалось сохранить файл:\n{e}")
+
+    flash_color()
+    show_notification("Сохранено")
+    # show_notification("Новое уведомление", "Произошло событие и здесь ваше сообщение.")
 
 
 # ===============================================================
@@ -192,6 +232,10 @@ root.bind("<Button-3>", show_popup)  # Windows/Linux
 
 # Ctrl+C копирование всего текста
 root.bind("<Control-c>", lambda e: copy_all_text_to_clipboard(box))
+
+# Ctrl+S сохранить
+# root.bind("<Control-s>", lambda e, w=box: save_text_to_file(w))
+root.bind("<Control-s>", lambda e: save_text_to_file(box))
 
 # ===============================================================
 
