@@ -13,6 +13,33 @@ from tkinter.constants import END
 
 # ===============================================================
 
+def load_file_into_text(text_widget, filepath=None, encoding='utf-8'):
+    """
+    Загружает содержимое файла в указанный текстовый виджет (tk.Text).
+
+    Args:
+        text_widget: объект tkinter.Text — существующее текстовое поле.
+        filepath: str | None — путь к файлу. Если None, откроется диалог выбора файла.
+        encoding: str — кодировка файла (по умолчанию 'utf-8').
+    """
+    path = filepath
+    if not path:
+        path = filedialog.askopenfilename()
+        if not path:
+            return  # пользователь отменил выбор
+
+    try:
+        with open(path, 'r', encoding=encoding) as f:
+            content = f.read()
+    except Exception as e:
+        text_widget.delete("1.0", END)
+        text_widget.insert(END, f"Ошибка загрузки файла:\n{e}")
+        return
+
+    text_widget.delete("1.0", END)
+    text_widget.insert(END, content)
+    
+ 
 # def show_notification(title, text, duration=3000):
 def show_notification(text, duration=5000):
     pop = Toplevel(root)
@@ -176,6 +203,7 @@ popup = Menu(root, tearoff=0)
 # popup.add_command(label="Сохранить", command=save_text_to_file(box))
 popup.add_command(label="Сохранить", command=lambda: save_text_to_file(box))
 popup.add_command(label="Копировать", command=lambda: copy_all_text_to_clipboard(box))
+popup.add_command(label="Открыть", command=lambda: load_file_into_text(box))
 popup.add_separator()
 popup.add_command(label="Выход", command=root.quit)
 
@@ -236,6 +264,8 @@ root.bind("<Control-c>", lambda e: copy_all_text_to_clipboard(box))
 # Ctrl+S сохранить
 # root.bind("<Control-s>", lambda e, w=box: save_text_to_file(w))
 root.bind("<Control-s>", lambda e: save_text_to_file(box))
+
+root.bind("<Control-o>", lambda e: load_file_into_text(box))
 
 # ===============================================================
 
