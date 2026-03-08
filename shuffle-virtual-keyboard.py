@@ -136,7 +136,7 @@ def save_text_to_file(text_widget: Text):
         messagebox.showerror("Ошибка сохранения", f"Не удалось сохранить файл:\n{e}")
 
     flash_color()
-    show_notification("Сохранено")
+    # show_notification("Сохранено")
     # show_notification("Новое уведомление", "Произошло событие и здесь ваше сообщение.")
 
 
@@ -160,10 +160,8 @@ print(f"Screen width: {width}px, height: {height}px")
 frame1 = Frame(root)
 # frame1.pack()
 frame1.pack(fill=BOTH, expand=True)  # растягиваем контейнер
-
-
-# frame1 = Frame(root): создаёт новый контейнер-виджет Frame, который является дочерним к окну root. Он служит для группирования других виджетов внутри окна.
-# frame1.pack(): размещает этот Frame в окне с помощью геометрического менеджера pack, т. е. добавляет его в окно и выстраивает в доступном пространстве (по умолчанию сверху вниз, по порядку вызова).
+	# frame1 = Frame(root): создаёт новый контейнер-виджет Frame, который является дочерним к окну root. Он служит для группирования других виджетов внутри окна.
+	# frame1.pack(): размещает этот Frame в окне с помощью геометрического менеджера pack, т. е. добавляет его в окно и выстраивает в доступном пространстве (по умолчанию сверху вниз, по порядку вызова).
 
 def select(value):
     if value == "Space":
@@ -182,18 +180,21 @@ def select(value):
 
 # Чтобы виджет Text занимал всю доступную ширину окна (соответственно и всей ширины экрана, если окно разворачивается до полного размера), нужно чтобы родительский контейнер expanding и менеджер геометрии растягивали его.
 
-# box = Text(frame1, height=20, font=("arial", 15), wrap=WORD)
-box = Text(frame1, height=20, font=("arial", 15), wrap=WORD,
-               bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
 
-# Дополнительно можно настроить подсветку выделения:
-# Text.configure(selectbackground="#3e6b8a", selectforeground="white")
+# box = Text(frame1, height=20, font=("arial", 15), wrap=WORD,
+               # bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
+# box.pack(fill=BOTH, expand=True, padx=(10, 10), pady=(10, 0))
 
-# box.pack(fill=BOTH, expand=True)
+# Text занимает всю доступную ширину и высоту внутри frame1
+box = Text(frame1, font=("arial", 15), wrap=WORD,
+           bg="#2b2b2b", fg="#e0e0e0", insertbackground="white")
+# box.pack(fill=BOTH, expand=True, padx=(10, 10), pady=(10, 0))
+
+# Параметр fill позволяет заполнить пространство контейнер по горизонтали (значение X), по вертикали (значение Y) или по обеим сторонам (значение BOTH).
+# Для заполнения контейнера по всем сторонам также требуется установить параметр expand = True
 box.pack(fill=BOTH, expand=True, padx=(10, 10), pady=(10, 0))
-# box.grid(row=0, column=0)
-# box.grid(row=0, column=0, pady=(20, 0))
-# Альтернатива — задать паддинг для frame frame1: frame1.pack(pady=10).
+
+# box.pack(anchor=N, fill=X, padx=(10, 10), pady=(10, 0))
 
 # ===============================================================
 
@@ -220,7 +221,16 @@ buttons = [
 random.shuffle(buttons)
 
 frame2 = Frame(root)
-frame2.pack()
+
+frame2.pack(anchor=S)
+    # frame2: это экземпляр виджета Frame, который вы хотите разместить в контейнере.
+
+    # pack(): это метод, который используется для упаковки виджетов в контейнере. Он управляет их позиционированием и размером.
+
+    # side=BOTTOM: этот параметр указывает, что frame2 должен быть размещен внизу контейнера. Можно использовать другие значения, такие как TOP, LEFT и RIGHT, для изменения положения виджета.
+
+    # fill=X: этот параметр указывает, что виджет должен растянуться по горизонтали, заполняя доступное пространство по оси X. Это значит, что ширина frame2 будет равна ширине родительского контейнера.
+
 
 varRow = 4
 varColumn = 0
@@ -248,6 +258,7 @@ for button in buttons:
     if varColumn > 14 and varRow == 7:
         varColumn = 0
         varRow += 1
+
 
 # ===============================================================
 
